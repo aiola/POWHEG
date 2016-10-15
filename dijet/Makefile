@@ -64,8 +64,9 @@ INCLUDE =$(wildcard ../include/*.h *.h include/*.h)
 
 ifeq ("$(PDF)","lhapdf")
 LHAPDF_CONFIG=lhapdf-config
-PDFPACK=lhapdfif.o
+PDFPACK=lhapdfif.o lhapdf6ifcc.o
 LIBSLHAPDF= -Wl,-rpath,$(shell $(LHAPDF_CONFIG) --libdir)  -L$(shell $(LHAPDF_CONFIG) --libdir) -lLHAPDF
+CXXFLAGS=-I$(shell $(LHAPDF_CONFIG) --incdir)
 ifeq  ("$(STATIC)","-static") 
 ## If LHAPDF has been compiled with gfortran and you want to link it statically, you have to include
 ## libgfortran as well. The same holds for libstdc++. 
@@ -100,7 +101,7 @@ endif
 	$(CC) $(DEBUG) -c -o $(OBJ)/$@ $^ 
 
 %.o: %.cc
-	$(CXX) $(DEBUG) -std=c++11 -c -o $(OBJ)/$@ $^ $(FJCXXFLAGS)
+	$(CXX) $(DEBUG) -std=c++11 -c -o $(OBJ)/$@ $^ $(FJCXXFLAGS) $(CXXFLAGS)
 
 USER=init_couplings.o init_processes.o Born_phsp.o Born.o virtual.o	\
      real.o $(PWHGANAL)
@@ -119,7 +120,11 @@ PWHG=pwhg_main.o pwhg_init.o bbinit.o btilde.o lhefwrite.o		\
 
 # target to generate LHEF output
 pwhg_main:$(PWHG)
+<<<<<<< HEAD
 	$(CXX) $(patsubst %,$(OBJ)/%,$(PWHG)) -L$(CGAL_ROOT)/lib $(LIBS) $(LIBSFASTJET) -L$(LIBGFORTRANPATH) -lgfortran $(STATIC) -o $@
+=======
+	$(CXX) $(patsubst %,$(OBJ)/%,$(PWHG)) $(LIBS) $(LIBSFASTJET) -L$(LIBGFORTRANPATH) -lgfortran -lstdc++ $(STATIC) -o $@
+>>>>>>> Compile with LHAPDF 6
 
 LHEF=lhef_analysis.o boostrot.o random.o cernroutines.o		\
      opencount.o powheginput.o $(PWHGANAL)	\
@@ -127,7 +132,7 @@ LHEF=lhef_analysis.o boostrot.o random.o cernroutines.o		\
 
 # target to analyze LHEF output
 lhef_analysis:$(LHEF)
-	$(FF) $(patsubst %,$(OBJ)/%,$(LHEF)) $(LIBS) $(LIBSFASTJET) $(STATIC)  -o $@ 
+	$(CXX) $(patsubst %,$(OBJ)/%,$(LHEF)) $(LIBS) $(LIBSFASTJET) -lstdc++ -lgfortran $(STATIC)  -o $@ 
 
 
 
