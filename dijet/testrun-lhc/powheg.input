@@ -11,13 +11,13 @@ bornktmin 10d0       ! (default 0d0) Generation cut: minimum kt in underlying Bo
 
 ! To be set only if using internal (mlm) pdfs
 ! 131 cteq6m
-ndns1 131            ! pdf set for hadron 1 (mlm numbering)
-ndns2 131            ! pdf set for hadron 2 (mlm numbering)
+! ndns1 131            ! pdf set for hadron 1 (mlm numbering)
+! ndns2 131            ! pdf set for hadron 2 (mlm numbering)
 
 ! To be set only if using LHA pdfs
 ! 10050 cteq6m
-! lhans1  10050      ! pdf set for hadron 1 (LHA numbering)
-! lhans2  10050      ! pdf set for hadron 2 (LHA numbering)	
+lhans1  11000      ! pdf set for hadron 1 (LHA numbering)
+lhans2  11000      ! pdf set for hadron 2 (LHA numbering)	
 
 ! To be set only if using different pdf sets for the two incoming hadrons
 #QCDLambda5  0.25    ! for not equal pdf sets 
